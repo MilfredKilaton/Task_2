@@ -13,6 +13,7 @@ namespace TaskMaster
         public string taskDescription;
         public string taskDeadline;
         public string taskStatus;
+        public bool isTaskCompleted;
         public TaskPriority Priority;
     }
 
@@ -21,6 +22,7 @@ namespace TaskMaster
         static void Main(string[] args)
         {
             int taskCount;
+            bool taskChecker;
 
             while (true)
             {
@@ -69,26 +71,35 @@ namespace TaskMaster
               
                 }
 
-                Console.Write("\nIs task completed? (Y/N)");
-                char taskInput = Convert.ToChar(Console.ReadKey());
-                taskInput.ToLower();
-                if (taskInput == 'Y')
+                Console.Write("\nIs task completed? (Y/N): ");
+                char taskInput = char.ToLower(Console.ReadKey().KeyChar);
+                if (taskInput == 'y')
                 {
-
+                    taskList[i].isTaskCompleted = true;
                 }
+                else
+                {
+                    taskList[i].isTaskCompleted = false;
+                }
+
+
             }
 
-            Console.WriteLine("------------- Current Tasks -------------");
-            int count = 0;
+            Console.WriteLine("\n\n------------- Current Tasks -------------");
+            int count = 1;
             foreach (UserTask task in taskList)
             {
-                Console.WriteLine($"-------------- Task #{count} -----------------");
-                Console.WriteLine($"Task Name: {task.taskName}");
-                Console.WriteLine($"Task Description:\n - {task.taskDescription}");
-                Console.WriteLine($"Task Deadline: {task.taskDeadline}");
-                Console.WriteLine($"Task Priority: {task.Priority.TaskPriorityLevel}");
-                Console.WriteLine("-----------------------------------------");
-                Console.WriteLine($"STATUS : {count} -----------------------");
+                string taskStatus = task.isTaskCompleted switch
+                {
+                    true => "Task Finished", // 13
+                    false => "Task Pending", // 12
+                };
+                Console.WriteLine($"\n-------------- Task #{count} -----------------");
+                Console.WriteLine($" * Task Name: {task.taskName}");
+                Console.WriteLine($" * Task Description:\n -- {task.taskDescription}");
+                Console.WriteLine($" * Task Deadline: {task.taskDeadline}");
+                Console.WriteLine($" * Task Priority: {task.Priority.TaskPriorityLevel}");
+                Console.WriteLine($"-------- STATUS : {taskStatus} --------");
                 count++;
             }
         }
